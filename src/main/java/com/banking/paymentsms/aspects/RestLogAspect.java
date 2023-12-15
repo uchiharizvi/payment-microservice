@@ -11,16 +11,16 @@ import java.time.Duration;
 import java.time.Instant;
 
 @Aspect
-@Component
 public class RestLogAspect {
 
-    @Around(value = "@annotation(com.banking.paymentsms.aspects.RestLog)")
-    public Object restLog(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around(value = "@annotation(restLogAnnotation)")
+    public Object restLog(ProceedingJoinPoint joinPoint, RestLog restLogAnnotation) throws Throwable {
         Logger log = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
+        String apiName = restLogAnnotation.apiName();
         Instant startTime = Instant.now();
         Object object = joinPoint.proceed();
         Instant endTime = Instant.now();
-        log.info("Total Time Taken for Processing {} MS", Duration.between(startTime, endTime).toMillis());
+        log.info("Total Time Taken for Processing {} in Milliseconds {}", apiName, Duration.between(startTime, endTime).toMillis());
         return object;
     }
 }
