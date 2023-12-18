@@ -5,18 +5,17 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
 
 @Aspect
-public class RestLogAspect {
+public class LogResponseTimeAspect {
 
-    @Around(value = "@annotation(restLogAnnotation)")
-    public Object restLog(ProceedingJoinPoint joinPoint, RestLog restLogAnnotation) throws Throwable {
+    @Around(value = "@annotation(logResponseTimeAnnotation)")
+    public Object restLog(ProceedingJoinPoint joinPoint, LogResponseTime logResponseTimeAnnotation) throws Throwable {
         Logger log = LoggerFactory.getLogger(joinPoint.getTarget().getClass());
-        String apiName = restLogAnnotation.apiName();
+        String apiName = logResponseTimeAnnotation.apiName();
         Instant startTime = Instant.now();
         Object object = joinPoint.proceed();
         Instant endTime = Instant.now();
